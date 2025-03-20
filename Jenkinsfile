@@ -1,5 +1,5 @@
 pipeline {
-    agent any 
+    agent any
     stages {
         stage('Checkout') {
             steps {
@@ -10,11 +10,11 @@ pipeline {
             steps {
                 sh '''
                 if ! command -v google-chrome > /dev/null; then
-                    sudo apt-get update
-                    sudo apt-get install -y wget unzip libglib2.0-0 libnss3 libgconf-2-4 libfontconfig1
-                    sudo wget -q https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-                    sudo apt-get install -y ./google-chrome-stable_current_amd64.deb
-                    sudo rm google-chrome-stable_current_amd64.deb
+                    apt-get update
+                    apt-get install -y wget unzip libglib2.0-0 libnss3 libgconf-2-4 libfontconfig1
+                    wget -q https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+                    apt-get install -y ./google-chrome-stable_current_amd64.deb
+                    rm google-chrome-stable_current_amd64.deb
                 fi
                 '''
             }
