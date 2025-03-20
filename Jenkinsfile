@@ -1,11 +1,6 @@
 pipeline {
     agent any
     stages {
-        stage('Checkout') {
-            steps {
-                git url: 'https://github.com/dhurtado07/abs-jenkins.git', branch: 'main'
-            }
-        }
         stage('Install Chrome (if needed)') {
             steps {
                 sh '''
