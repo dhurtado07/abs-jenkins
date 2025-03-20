@@ -5,6 +5,7 @@ import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
@@ -19,8 +20,24 @@ public class ShoppingCartTest {
 
     @BeforeMethod
     public void setup() {
-        System.setProperty("webdriver.chrome.driver", "D:\\ABSTRACTA\\chromedriver-win64\\chromedriver-win64\\chromedriver.exe");
-        driver = new ChromeDriver();
+        // Detecta el sistema operativo y configura la ruta de ChromeDriver
+        String os = System.getProperty("os.name").toLowerCase();
+        String driverPath;
+        if (os.contains("win")) {
+            driverPath = "src/test/resources/drivers/chromedriver.exe";
+        } else {
+            driverPath = "src/test/resources/drivers/chromedriver";
+        }
+        System.setProperty("webdriver.chrome.driver", new File(driverPath).getAbsolutePath());
+
+        // Configura opciones para Chrome
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments("--no-sandbox");
+        options.addArguments("--disable-dev-shm-usage");
+        options.addArguments("--remote-allow-origins=*");
+        options.addArguments("--headless"); // Para Jenkins/Docker
+
+        driver = new ChromeDriver(options);
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
         driver.manage().window().maximize();
         driver.get("http://opencart.abstracta.us/");
