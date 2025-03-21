@@ -2,20 +2,21 @@ pipeline {
     agent any
 
     stages {
-        stage('Clone Repository') {
+        stage('Preparar ChromeDriver') {
             steps {
-                sh 'git clone https://github.com/dhurtado07/abs-jenkins.git'
-                sh 'cd abs-jenkins'
+                sh 'chmod +x src/test/resources/drivers/chromedriver'
             }
         }
-        stage('Build and Test') {
+
+        stage('Run Tests') {
             steps {
-                sh 'cd abs-jenkins && mvn clean test'
+                sh 'mvn clean test'
             }
         }
-        stage('Archive Screenshots') {
+
+        stage('Archivar Screenshots') {
             steps {
-                archiveArtifacts artifacts: 'abs-jenkins/screenshots/*.png', allowEmptyArchive: true
+                archiveArtifacts artifacts: 'screenshots/*.png', allowEmptyArchive: true
             }
         }
     }
@@ -23,9 +24,9 @@ pipeline {
     post {
         always {
             publishHTML(target: [
-                reportDir: 'abs-jenkins/target/surefire-reports',
+                reportDir: 'target/surefire-reports',
                 reportFiles: 'index.html',
-                reportName: 'TestNG Report'
+                reportName: 'Test Report'
             ])
         }
     }
