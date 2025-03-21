@@ -2,17 +2,12 @@ pipeline {
     agent any
 
     stages {
-        stage('Preparar ChromeDriver') {
-            steps {
-                sh 'chmod +x src/test/resources/drivers/chromedriver'
-            }
-        }
-
+  
         stage('Run Tests') {
             steps {
-                sh 'mvn clean test'
+                sh 'mvn clean install test'
             }
-        }
+        } 
 
         stage('Archivar Screenshots') {
             steps {
