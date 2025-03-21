@@ -23,11 +23,14 @@ pipeline {
 
     post {
         always {
-            publishHTML(target: [
-                reportDir: 'target/surefire-reports',
-                reportFiles: 'index.html',
-                reportName: 'Test Report'
-            ])
+            // Importante: debe ir dentro de `node` para que tenga contexto FilePath
+            node {
+                publishHTML(target: [
+                    reportDir: 'target/surefire-reports',
+                    reportFiles: 'index.html',
+                    reportName: 'Test Report'
+                ])
+            }
         }
     }
 }
